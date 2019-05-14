@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- CSS Imports -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/leaflet.css">
+
+    <!-- Javascript Imports -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.js" integrity="sha256-6BZRSENq3kxI4YYBDqJ23xg0r1GwTHEpvp3okdaIqBw=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore.js" integrity="sha256-O4179En8zabOlPYBNvGp8cF0uh0vnSZpW4Q6Ul1h+8c=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+    <script src="Top200_Congested_Intersections_Philadelphia.js"></script>
+
+    <script src="Signalized_Intersections_Philadelphia.js"></script>
+    <script src="Ramps_Philadelphia.js"></script>
+    <script src="Major_Roads_Philadelphia.js"></script>
+    <script src="Rail_Stations_Philadelphia.js"></script>
+    <script src="Roadwork_Philadelphia.js"></script>
+    <script src="HIN_Philadelphia.js"></script>
+
+  </head>
+  </body>
+
+
+
+  <!-- SETS UP TABS -->
+  <div class="container">
+  <ul class="nav nav-tabs nav-justified">
+    <li><a href="about.html">About</a></li>
+    <li><a href="trafficlights.html">Traffic Lights</a></li>
+    <li><a href="ramps.html">Ramps</a></li>
+    <li><a href="majorroads.html">Major Roads</a></li>
+    <li><a href="railstations.html">Rail Stations</a></li>
+    <li><a href="roadwork.html">Roadwork</a></li>
+    <li><a href="hin.html">HIN</a></li>
+    <li><a href="conclusion.html">Conclusion</a></li>
+  </ul>
+  </div>
+
+  </body>
+
+
+
+<!-- ABOUT PAGE -->
+<h1 style="text-align:center">Final Web Application: Predictors by Proximity to the Most Congested Intersections in Philadelphia</h1>
+<h3 style="text-align:center">By Ian Schwarzenberg, CPLN 692, Spring 2019 </h3>
+<br><br>
+
+
+<h3 style="text-align:center">Background</h3>
+<h4 style="text-align:left">This application application looks at what factors potentially affect why the most congested intersections in Philadelphia are located where they are. It looks at the most congested intersections' proximities to: traffic signals, ramps, major roads, rail stops, road construction sites and the Philadelphia HIN (High Injury Network) road segments which comprise the city's most dangerous roads in terms of car crashes. These variables were chosen because they could all potentially work to make a road more congested. Improperly timed traffic lights can naturally cause congestion to build, cars can pile on ramps waiting to pass through intersections at slow lights in them, major roads can naturally be more busy due to their higher volume, a lack of transit access in an area can increase congestion, and roads that frequently see lane closures due to construction or high crash rates can also cause congestion.</h4>
+<h4 style="text-align:left">The target users for this application are Philadelphia area transportation planners such as my boss at the DVRPC in order to supplement his work on the DVRPC's regional Congestion Management Plan. This plan works to identify the most congested spots in the Philadelphia region, possible causes to their congestion and potential remedies. This application would help urban planners like my boss understand what could potentially be affecting the reasons why the most congested intersections in Philadelphia are popping up where they are. This would help people like him devise potential solutions to the congestion and where to best place them.</h4>
+<br>
+
+
+<h3 style="text-align:center">Methodology</h3>
+<h4 style="text-align:left">At work, I first downloaded a shapefile of intersections of various congestion levels based on 2017 data in the DVRPC Pennsylvania counties from https://pda.ritis.org/suite/. After creating columns in that detailing each intersection's total vehicle and volume delay rankings, I then brought that into QGIS to select out only intersections in Philadelphia county and export those as a new GeoJSON. To then bring those into the JavaScript application, 1) I first copied the original geoJSON I made into the same folder as all of the tab html documents, 2) I then changed their file extensions to .js, 3) I then opened them in Atom, and added their variable names to the very beginning of them.</h4>
+<h4 style="text-align:left">I then repeated the process above for all of the predictor shapefiles I downloaded separately for this project.</h4>
+<h4 style="text-align:left">Only 250 and 500 foot buffer options are given to the user because these are the 2 buffers my boss was most interested when I did similar analyses during my DVRPC internship.</h4>
+<h4 style="text-align:left">My boss at the DVRPC usually defined an intersection as being the most congested if it was in at most the top 200 of intersections in terms of vehicle and volume delay. Therefore, only these intersections of Philadelphia were considered in this analysis.</h4>
+<br>
+
+
+<h3 style="text-align:center">How to use this App</h3>
+<h4 style="text-align:left">Each tab's map will show the most congested intersections' locations compared to the user-inputted buffers surrounding each tab's predictor. Each tab will also have pie charts showing the breakdown of the relationship between the most congested intersections and the tab's predictor by the user-inputted buffer. </h4>
+<h4 style="text-align:left"> Always refresh the page before choosing a new buffer. Also, if the 250 foot buffer pie chart does not show at first, right click the page, choose "Inspect element", and then x out of the resulting window. </h4>
+<br>
+
+
+<h3 style="text-align:center">Data Sources</h3>
+<h4 style="text-align:left">Philadelphia congested intersections shapefile: RITIS (https://pda.ritis.org/suite/) and DVRPC Senior Planner Tom Edinger</h4>
+<h4 style="text-align:left">Ramps and major roads shapefile: https://www.opendataphilly.org/dataset/street-centerlines </h4>
+<h4 style="text-align:left">Traffic lights shapefile: https://www.opendataphilly.org/dataset/intersection-controls</h4>
+<h4 style="text-align:left">Rail stations shapefile: https://www.opendataphilly.org/dataset/dvrpc-passenger-rail </h4>
+<h4 style="text-align:left">Road construction sites shapefile: https://www.opendataphilly.org/dataset/street-lane-closures</h4>
+<h4 style="text-align:left">Philadelphia HIN shapefile: https://www.opendataphilly.org/dataset/high-injury-network</h4>
+
+</html>

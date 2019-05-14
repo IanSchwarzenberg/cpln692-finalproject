@@ -1,0 +1,58 @@
+/* Found out how to make tabs in the first place from https://www.w3schools.com/bootstrap/bootstrap_tabs_pills.asp */
+/* Exact shade of DVRPC blue: #0084B4 (got this from inspecting elements of https://twitter.com/DVRPC?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor)*/
+
+.nav-tabs{
+  background-color:#FFFFFF;
+  color: #0084B4,
+}
+
+ul.nav > li > a:hover {
+	background-color: #0084B4;
+	color: #FFFFFF;
+	border-style: none;
+} /* Changes how tabs look when they are hovered over, found out how to do from https://stackoverflow.com/questions/10647997/change-hover-color-on-nav-tabs */
+
+h1 {
+  color: #0084B4;
+}
+
+h2 {
+  color: #0084B4;
+}
+
+h3 {
+  color: #0084B4;
+}
+
+h4 {
+  color: #0084B4;
+}
+
+h5 {
+  color: #0084B4;
+}
+
+h6 {
+  color: #0084B4;
+}
+
+.form-inline {
+  color: #0084B4;
+}
+
+.form-control {
+  color: #0084B4;
+}
+
+.dropdown {
+  position:absolute;
+  top: 210px;
+  right:10px;
+  left:680px;
+}
+
+/* .chartContainer {
+  height: 300px;
+  width: 50%;
+  border: 1px solid #AAA;
+} */

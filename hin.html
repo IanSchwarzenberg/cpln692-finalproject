@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- CSS Imports -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/leaflet.css">
+
+    <!-- Javascript Imports -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.js" integrity="sha256-6BZRSENq3kxI4YYBDqJ23xg0r1GwTHEpvp3okdaIqBw=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore.js" integrity="sha256-O4179En8zabOlPYBNvGp8cF0uh0vnSZpW4Q6Ul1h+8c=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+    <script src="Top200_Congested_Intersections_Philadelphia.js"></script>
+
+    <script src="Signalized_Intersections_Philadelphia.js"></script>
+    <script src="Ramps_Philadelphia.js"></script>
+    <script src="Major_Roads_Philadelphia.js"></script>
+    <script src="Rail_Stations_Philadelphia.js"></script>
+    <script src="Roadwork_Philadelphia.js"></script>
+    <script src="HIN_Philadelphia.js"></script>
+
+  </head>
+  </body>
+
+
+
+  <!-- SETS UP TABS -->
+  <div class="container">
+  <ul class="nav nav-tabs nav-justified">
+    <li><a href="about.html">About</a></li>
+    <li><a href="trafficlights.html">Traffic Lights</a></li>
+    <li><a href="ramps.html">Ramps</a></li>
+    <li><a href="majorroads.html">Major Roads</a></li>
+    <li><a href="railstations.html">Rail Stations</a></li>
+    <li><a href="roadwork.html">Roadwork</a></li>
+    <li><a href="hin.html">HIN</a></li>
+    <li><a href="conclusion.html">Conclusion</a></li>
+  </ul>
+  </div>
+
+  </body>
+
+
+
+<!-- Dangerous Roads PAGE -->
+<h2 style="text-align:center">Dangerous Roads</h2>
+<br> <br>
+
+<h4 style="text-align:center"> Choose distance surrounding dangerous roads: </h4>
+<h4 style="text-align:center"> <strong>NOTE:</strong> Always <strong>refresh</strong> the page before choosing a new buffer. </h4>
+<br> <br>
+<div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-hspopup="true" aria-expanded="true">
+          Choose buffer
+          <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+            <li><a class="dropdown-item" data-value="250" href="#"><font color="#0084B4">250 ft.</font></a></li>
+            <li><a class="dropdown-item" data-value="500" href="#"><font color="#0084B4">500 ft.</font></a></li>
+          </ul>
+        </div>
+
+
+
+<!-- Map -->
+<div id="map" style="height: 570px; width: 1140px; left: 180px; border: 1px solid #AAA;"></div>
+<br>
+<h4 style="text-align:left"> The pins on the map above are the most congested intersections in Philadelphia as defined by the ones that are in both the top 200 in terms of both vehicle and volume delay among congested intersections in the Pennsylvania side of the DVRPC region. The blue circles represent the buffers drawn around the dangerous roads. </h4>
+<br> <br>
+
+
+
+<!-- Pie chart (found out how to do from https://canvasjs.com/html5-javascript-pie-chart/)-->
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+<br>
+<h4 style="text-align:left"> The pie charts show that the clear majority of the most congested Philadelphia intersections are far from dangerous roads in the sense that they are more than a couple blocks from the roads. Therefore, dangerous roads may not be a good predictor of determining where the most congested Philadelphia intersections pop up. </h4>
+
+
+
+    <script>
+// Maps (found out how to do from midterm)
+    var map = L.map('map', {
+      center: [39.954317, -75.190470],
+      zoom: 12
+    });
+
+    var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.{ext}', {
+      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      subdomains: 'abcd',
+      minZoom: 0,
+      maxZoom: 20,
+      ext: 'png'
+    }).addTo(map);
+
+
+    var Top200Intersections_Layer = new L.geoJSON(Top200Intersections,{
+      pointToLayer: function (feature, latlng) {
+        return L.marker(latlng);
+      }
+    });
+    Top200Intersections_Layer.addTo(map);
+
+    var HIN_Layer = new L.geoJSON(HIN,{
+      pointToLayer: function (feature, latlng) {
+        return L.marker(latlng);
+      }
+    });
+    //console.log(HIN_Layer); //Checks to see if it did it right
+
+
+
+$(".dropdown-menu li a").click(function(){
+  $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>'); //This and line below make dropdown menu take name of option selected
+  $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+
+  var bufferDistance = $(this).data('value'); //Extracts the data-value from the dropdown option selected and puts that into the code for my buffer
+  var buffers = turf.buffer(HIN_Layer.toGeoJSON(), bufferDistance, {units: 'feet'});
+  predictorBuffers = L.geoJSON(buffers);
+  predictorBuffers.addTo(map);
+
+  var ptsWithin = turf.pointsWithinPolygon(Top200Intersections_Layer.toGeoJSON(), predictorBuffers.toGeoJSON());
+  console.log(ptsWithin);
+
+
+  var pctWithinBuffer_250 = (4/26)*100; //Could not get unique points/items in ptsWithin geoJSON automatically because of duplication in the spatial joining process, so I counted number of unique ones manually in the console. 26 is the length of the Top200Intersections_Layer, found this out in QGIS
+  var pctOutsideBuffer_250 = 100-pctWithinBuffer_250;
+
+  var pctWithinBuffer_500 = (5/26)*100;
+  var pctOutsideBuffer_500 = 100-pctWithinBuffer_500;
+
+
+
+//MAKES THE PIE CHARTS. Found out how to do from https://canvasjs.com/html5-javascript-pie-chart/
+var chart_250 = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	title: {
+		text: "Dangerous Roads by Proximity to Phila. Most Congested Intersections"
+	},
+	data: [{
+		type: "pie",
+		startAngle: 240,
+		yValueFormatString: "##0.00\"%\"",
+		indexLabel: "{label} {y}",
+		dataPoints: [
+			{y: pctWithinBuffer_250, label: "At Most 250 ft. from Intersections"},
+			{y: pctOutsideBuffer_250, label: "At Least 250 ft. from Intersections"}
+		]
+	}]
+});
+
+var chart_500 = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	title: {
+		text: "Dangerous Roads by Proximity to Phila. Most Congested Intersections"
+	},
+	data: [{
+		type: "pie",
+		startAngle: 240,
+		yValueFormatString: "##0.00\"%\"",
+		indexLabel: "{label} {y}",
+		dataPoints: [
+			{y: pctWithinBuffer_500, label: "At Most 500 ft. from Intersections"},
+			{y: pctOutsideBuffer_500, label: "At Least 500 ft. from Intersections"}
+		]
+	}]
+});
+
+if(bufferDistance == 250){
+        setTimeout(function(){
+        chart_250.render();
+      },1); //This setTimeout function ensures that the pie charts appear when the tab is clicked. Found out how to do from https://canvasjs.com/forums/topic/charts-arent-full-size-until-page-is-refreshed/
+
+} else if (bufferDistance == 500){
+        setTimeout(function(){
+        chart_500.render();
+      },1);
+
+}
+
+}); //End of button/dropdown menu item selection
+    </script>
+
+
+
+</html>

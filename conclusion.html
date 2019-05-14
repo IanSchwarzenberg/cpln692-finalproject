@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- CSS Imports -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/leaflet.css">
+
+    <!-- Javascript Imports -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.js" integrity="sha256-6BZRSENq3kxI4YYBDqJ23xg0r1GwTHEpvp3okdaIqBw=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore.js" integrity="sha256-O4179En8zabOlPYBNvGp8cF0uh0vnSZpW4Q6Ul1h+8c=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+    <script src="Top200_Congested_Intersections_Philadelphia.js"></script>
+
+    <script src="Signalized_Intersections_Philadelphia.js"></script>
+    <script src="Ramps_Philadelphia.js"></script>
+    <script src="Major_Roads_Philadelphia.js"></script>
+    <script src="Rail_Stations_Philadelphia.js"></script>
+    <script src="Roadwork_Philadelphia.js"></script>
+    <script src="HIN_Philadelphia.js"></script>
+
+  </head>
+  </body>
+
+
+
+  <!-- SETS UP TABS -->
+  <div class="container">
+  <ul class="nav nav-tabs nav-justified">
+    <li><a href="about.html">About</a></li>
+    <li><a href="trafficlights.html">Traffic Lights</a></li>
+    <li><a href="ramps.html">Ramps</a></li>
+    <li><a href="majorroads.html">Major Roads</a></li>
+    <li><a href="railstations.html">Rail Stations</a></li>
+    <li><a href="roadwork.html">Roadwork</a></li>
+    <li><a href="hin.html">HIN</a></li>
+    <li><a href="conclusion.html">Conclusion</a></li>
+  </ul>
+  </div>
+
+  </body>
+
+<h1 style="text-align:center">Conclusion</h1>
+<br>
+<h3 style="text-align:center">Findings</h3>
+<h4 style="text-align:left">Predictors that have <i>notable</i> associations with the most congested intersections: major roads and ramps. </h4>
+<h4 style="text-align:left">Predictors that have <i>weak</i> associations with the most congested intersections: rail stations, traffic lights, roadwork sites and dangerous roads.</h4>
+<h4 style="text-align:left">Overall, these findings are a mix of surprising and not. On one hand, it is not surprising to find that the most congested intersections in Philadelphia are popping up on major roads and ramps, since major roads can be heavily trafficked and congestion could easily build up on ramps with cars waiting to yield onto those major roadways. It is also not surprising to see these intersections not occur near rail stops, as a lack of transit access in an area can drive more people to use cars and therefore increase congestion. </h4>
+<h4 style="text-align:left">On the other hand, it is surprising to find that these are not occurring by traffic signals much, as poorly-timed traffic lights can easily cause congestion at an intersection. It is also surprising to see how roadwork sites and dangerous roads do not see many of the most congested intersections in Philadelphia near them, as more crashes and frequent construction on roads can naturally increase congestion on a road as well. </h4>
